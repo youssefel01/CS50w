@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="top-links" >
+    <a href="imageSearch.html">Google Images</a>
+    <a href="advensedSearch.html">Advanced Search</a>
+  </div>
+  <div class="container">
+    <header>
+      <img src="img/google-search.png" alt="Google" class="logo">
+    </header>
+    <main>
+      <form action="https://www.google.com/search" method="GET" class="search-form" id="search-form">
+        <div class="search-bar">
+          <img src="img/search-icon.png" alt="Search Icon" class="search-icon">
+          <input type="text" name="q" class="search-input" placeholder="Search Google" autocomplete="off">
+          <img src="img/mic-icon.png" alt="Microphone Icon" class="mic-icon">
+        </div>
+        <div class="buttons">
+          <input type="submit" value="Google Search" class="Gbutton">
+          <input type="submit" value="I'm Feeling Lucky" class="Gbutton" id="lucky-button">
+        </div>
+      </form>
+    </main>
+    <footer>
+      <p>A clone of google search, powered by Youssef El Yarchouhi</p>
+    </footer>
+  </div>
+  <script>
+    // Get references to the form and button elements
+const searchForm = document.getElementById('search-form');
+const luckyButton = document.getElementById('lucky-button');
+
+// Add an event listener to the button
+luckyButton.addEventListener('click', (event) => {
+  event.preventDefault(); // Prevent the form submission
+
+  // Get the search query from the input field
+  const searchQuery = document.querySelector('.search-input').value;
+
+  // Redirect the user to the search result page
+  window.location.href = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}&btnI=I%27m+Feeling+Lucky`;
+});
+  </script>
+</body>
+</html>

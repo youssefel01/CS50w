@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Search</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="top-links">
+    <a href="index.html">Google Search</a>
+    <a href="imageSearch.html">Google Images</a>
+  </div>
+  <div class="containerAs">
+    <header class="adSearch">
+      <h1>Advanced Search</h1>
+    </header>
+    <main>
+      <form action="https://www.google.com/search" method="GET" class="search-formAs">
+        <div class="search-bar">
+          <input type="text" name="as_q" class="search-in" placeholder="All these words" autocomplete="off">
+        </div>
+        <div class="search-bar">
+          <input type="text" name="as_epq" class="search-in" placeholder="This exact word or phrase" autocomplete="off">
+        </div>
+        <div class="search-bar">
+          <input type="text" name="as_oq" class="search-in" placeholder="Any of these words" autocomplete="off">
+        </div>
+        <div class="search-bar">
+          <input type="text" name="as_eq" class="search-in" placeholder="None of these words" autocomplete="off">
+        </div>
+        <div class="buttonsAS">
+          <input type="submit" value="Advanced Search" class="search-buttonAS">
+        </div>
+      </form>
+    </main>
+    <footer class="footer">
+      <p>A clone of Google Advanced Search, powered by Youssef El Yarchouhi</p>
+    </footer>
+  </div>
+</body>
+</html>

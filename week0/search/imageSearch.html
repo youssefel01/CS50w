@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Images</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="top-links">
+    <a href="index.html">Google Search</a>
+    <a href="advensedSearch.html">Advanced Search</a>
+  </div>
+  <div class="container">
+    <header>
+      <img src="img/images-google.png" alt="Google" class="logo">
+    </header>
+    <main>
+      <form action="https://www.google.com/search" method="GET" class="search-form">
+        <div class="search-bar">
+          <img src="img/search-icon.png" alt="Search Icon" class="search-icon">
+          <input type="text" name="q" class="search-input" placeholder="Search Google" autocomplete="off">
+          <input type="text" name="tbm" value="isch" style="display: none">
+          <img src="img/mic-icon.png" alt="Microphone Icon" class="mic-icon">
+        </div>
+        <div class="buttons">
+          <input type="submit" value="Image Search" class="Gbutton">
+        </div>
+      </form>
+    </main>
+    <footer>
+      <p>A clone of google search, powered by Youssef El Yarchouhi</p>
+    </footer>
+  </div>
+</body>
+</html>
