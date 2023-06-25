@@ -1,0 +1,21 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia entry
+{% endblock %}
+
+{% block body %}
+    <style>
+        .editB{
+            text-decoration: none;
+            padding: 5px 5px 5px 5px; 
+            background-color:#bbbbbb; 
+            color: rgb(19, 18, 18);
+            border-radius: 4px;
+            font-size: large;
+        }
+    </style>
+    <a class="editB" href="{% url 'edit' title=title %}">Edit Entry</a>
+    <hr>
+    <h1>{{ entry|safe }}</h1>
+{% endblock %}
