@@ -1,0 +1,39 @@
+body {
+    padding: 10px;
+}
+
+.form-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.listings-container ul{
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    list-style-type: none;
+    justify-content: center;
+}
+
+.listings-container li {
+    width: 300px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+   
+}
+
+.listings-container li .Image-container img {
+    max-width: 100%; /* Set the maximum width to fit inside the <li> */
+    max-height: 200px; /* Set the maximum height (adjust as needed) */
+    object-fit: cover; /* Maintain the image's aspect ratio */
+}
+
+/*for the listing_page */
+
+.listing-container {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}

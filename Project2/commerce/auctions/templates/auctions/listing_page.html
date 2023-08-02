@@ -1,0 +1,54 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="listing-container">
+    <div class="listing-content">
+        <div>
+            <img src="{{ listing_page.imageUrl }}" alt="{{listing_page.title}}" width="200px">
+            <h1>{{listing_page.title}}</h1>
+            {% if last_bid %}
+            <strong>Last Bid: {{last_bid.amount}}</strong>
+            {% else %}
+            <strong>primary_price: {{listing_page.primary_price}}</strong>
+            {% endif %}
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Place Bid">
+            </form>
+        </div>
+        <div>
+            <p>{{listing_page.description}}</p>
+        </div>
+        <div>
+            <h2>Comments</h2>
+            <hr>
+            {% for comment in comments %}
+            <div>
+                <small>@{{comment.creater}}  |  {{comment.created|timesince}} ago</small>
+                <p>{{comment.body}}</p>
+                <hr>
+            </div>
+            {% endfor %}
+        </div>
+        {% if request.user.is_authenticated %}
+        <div>
+            <form action="{% url 'listingComment' listing_page.id %}" method="POST">
+                {% csrf_token %}
+                <input type="text" name="body" placeholder="Write your comment here..">
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="Bidders">
+        <h2>Bidders</h2>
+        <hr>
+        {% for Bidder in Bidders %}
+        <small>@{{Bidder.bidder}} | {{Bidder.created|timesince}} ago</small>
+        <strong>{{Bidder.amount}} $</strong>
+        <hr>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

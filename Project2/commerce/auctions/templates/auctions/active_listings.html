@@ -1,0 +1,16 @@
+<ul>
+    {% for listing in active_listings %}
+    <a href="{% url 'listingPage' listing.id%}">
+        <li>
+            <div class="Image-container">
+            {% if listing.imageUrl %} 
+            <img src="{{ listing.imageUrl }}" alt="{{ listing.title }}">
+            {% endif %}
+            </div>
+            <h3>{{ listing.title }}</h3>
+            <p>{{ listing.description|slice:":100" }}...</p>
+            <p class="current-price">Current Price: {{ listing.primary_price }}</p>
+        </li>
+    </a>
+    {% endfor %}
+</ul>
