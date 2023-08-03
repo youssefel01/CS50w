@@ -48,6 +48,9 @@ class Watchlist(models.Model):
     class Meta:
         ordering = ['-created']
 
+    def __str__(self):
+        return f"Watchlist of {self.user}"
+
 class Comment(models.Model):
     creater = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(AuctionListing, on_delete=models.CASCADE)

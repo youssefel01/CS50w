@@ -6,16 +6,32 @@
         <div>
             <img src="{{ listing_page.imageUrl }}" alt="{{listing_page.title}}" width="200px">
             <h1>{{listing_page.title}}</h1>
+
+            {% if request.user.is_authenticated  %}
+                {% if is_in_watchlist %}
+                <form action="{% url 'removeWatchlist' listing_page.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Remove from Watchlist</button>
+                </form>
+                {% else %}
+                <form action="{% url 'addWatchlist' listing_page.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Add to Watchlist</button>
+                </form>
+                {% endif %}
+            {% endif %}
             {% if last_bid %}
             <strong>Last Bid: {{last_bid.amount}}</strong>
             {% else %}
             <strong>primary_price: {{listing_page.primary_price}}</strong>
             {% endif %}
+
             <form action="" method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <input type="submit" value="Place Bid">
             </form>
+
         </div>
         <div>
             <p>{{listing_page.description}}</p>
