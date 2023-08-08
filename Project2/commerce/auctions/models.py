@@ -19,7 +19,7 @@ class Category(models.Model):
         return self.name
 
 class AuctionListing(models.Model):
-    creater = models.ForeignKey(User, on_delete=models.CASCADE, related_name='listings')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='listings')
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=500, null=True, blank=True)
     primary_price = models.FloatField()

@@ -166,3 +166,31 @@ def removeWatchlist(request, pk):
     if request.method == "POST":
         Watchlist.objects.filter(user=request.user, listing=listing_page).delete()
         return redirect("listingPage", pk=listing_page.id)
+    
+# closeAuction
+def AuctionControl(request, pk):
+    listing_page = AuctionListing.objects.get(id=pk)
+    if request.method == "POST":
+        if listing_page.is_active: #if it's active --> close it
+            # check if there are any bidders
+            last_bid = Bid.objects.filter(listing=listing_page).first()
+            print(last_bid.bidder)
+            if last_bid: # there is a bidder --> process winner notification and ownership transfer
+                listing_page.is_active = False
+                listing_page.owner = last_bid.bidder 
+                listing_page.save()
+                # ADD NOTIFICATION sented to the winner
+                messages.success(request, f"You have been successfully Closed this auction, the new owner of this auction is @{last_bid.bidder}")
+            else: # no bidders --> just close the auction
+                listing_page.is_active = False
+                listing_page.save()
+                messages.success(request, "You have been successfully Closed this auction.")
+
+            return redirect("listingPage", pk=listing_page.id)
+        else: #if it's not active --> activate it
+            listing_page.is_active = True
+            listing_page.save()
+            messages.success(request, "You have been successfully Activate this auction.")
+            return redirect("listingPage", pk=listing_page.id)
+        
+    

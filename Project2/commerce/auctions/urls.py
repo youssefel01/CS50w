@@ -15,6 +15,7 @@ urlpatterns = [
     path("listing-comment/<str:pk>/", views.listingComment, name="listingComment"),
     path("add-to-Watchlist/<str:pk>", views.addWatchlist, name="addWatchlist"),
     path("remove-from-Watchlist/<str:pk>", views.removeWatchlist, name="removeWatchlist"),
+    path("auction-control/<str:pk>", views.AuctionControl, name="AuctionControl"),
 ]
 
 

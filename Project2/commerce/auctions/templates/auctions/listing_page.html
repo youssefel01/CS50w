@@ -8,16 +8,30 @@
             <h1>{{listing_page.title}}</h1>
 
             {% if request.user.is_authenticated  %}
-                {% if is_in_watchlist %}
-                <form action="{% url 'removeWatchlist' listing_page.id %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit">Remove from Watchlist</button>
-                </form>
+                {% if request.user == listing_page.owner %}
+                    {% if listing_page.is_active %}
+                    <form action="{% url 'AuctionControl' listing_page.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">Close Auction</button>
+                    </form>
+                    {% else %}
+                    <form action="{% url 'AuctionControl' listing_page.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">Activate Auction</button>
+                    </form>
+                    {% endif %}
                 {% else %}
-                <form action="{% url 'addWatchlist' listing_page.id %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit">Add to Watchlist</button>
-                </form>
+                    {% if is_in_watchlist %}
+                    <form action="{% url 'removeWatchlist' listing_page.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">Remove from Watchlist</button>
+                    </form>
+                    {% else %}
+                    <form action="{% url 'addWatchlist' listing_page.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">Add to Watchlist</button>
+                    </form>
+                    {% endif %}
                 {% endif %}
             {% endif %}
             {% if last_bid %}
