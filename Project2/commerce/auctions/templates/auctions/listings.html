@@ -1,5 +1,6 @@
+
 <ul>
-    {% for listing in active_listings %}
+    {% for listing in listings %}
     <a href="{% url 'listingPage' listing.id%}">
         <li>
             <div class="Image-container">

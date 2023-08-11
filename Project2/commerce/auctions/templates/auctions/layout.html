@@ -28,6 +28,16 @@
                     <a class="nav-link" href="{% url 'watchlistPage' %}">Watchlist</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {% if user.unread_notification_count > 0 %}has-unread{% endif %}" href="{% url 'Notifications' %}">Notifications
+                        {% if user.unread_notification_count > 0 %}
+                        <span class="badge">{{ user.unread_notification_count }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Profile' %}">Profile</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                 </li>
             {% else %}

@@ -1,10 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import User, AuctionListing, Bid, Comment, Watchlist
+from .models import User,Category, AuctionListing, Bid, Comment, Watchlist, Notification
 from .forms import ListingForm, BidForm
 
 # django flash messages
@@ -12,9 +13,24 @@ from django.contrib import messages
 
 
 def index(request):
-    active_listings = AuctionListing.objects.filter(is_active=True)
-    context = {'active_listings':active_listings}
+    # get the categorie
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+
+    listings = AuctionListing.objects.filter(
+        Q(is_active=True) &
+        Q(category__name__icontains=q)
+        )
+    Categories = Category.objects.all()
+    context = {'listings':listings,
+               'Categories':Categories}
     return render(request, "auctions/index.html", context)
+
+def Profile(request):
+    listings = AuctionListing.objects.filter(owner=request.user)
+
+    context = {"listings":listings}
+    return render(request, "auctions/profile.html", context)
+    
 
 
 def login_view(request):
@@ -167,7 +183,7 @@ def removeWatchlist(request, pk):
         Watchlist.objects.filter(user=request.user, listing=listing_page).delete()
         return redirect("listingPage", pk=listing_page.id)
     
-# closeAuction
+# Auction Control
 def AuctionControl(request, pk):
     listing_page = AuctionListing.objects.get(id=pk)
     if request.method == "POST":
@@ -179,7 +195,9 @@ def AuctionControl(request, pk):
                 listing_page.is_active = False
                 listing_page.owner = last_bid.bidder 
                 listing_page.save()
-                # ADD NOTIFICATION sented to the winner
+                # CREATE A NOTIFICATION sented to the winner
+                
+                notification = Notification.objects.create(user=last_bid.bidder, listing=listing_page)
                 messages.success(request, f"You have been successfully Closed this auction, the new owner of this auction is @{last_bid.bidder}")
             else: # no bidders --> just close the auction
                 listing_page.is_active = False
@@ -192,5 +210,13 @@ def AuctionControl(request, pk):
             listing_page.save()
             messages.success(request, "You have been successfully Activate this auction.")
             return redirect("listingPage", pk=listing_page.id)
+        
+        
+def Notifications(request):
+    notifications = Notification.objects.filter(user=request.user)
+    
+    notifications.update(is_read=True)
+    context = {"notifications":notifications}
+    return render(request, 'auctions/Notifications.html', context)
         
     
