@@ -20,6 +20,12 @@ def index(request):
         Q(is_active=True) &
         Q(category__name__icontains=q)
         )
+
+    # retrieve the highest bid amount for each listing if the listing have a bid
+    for listing in listings: 
+        highest_bid = Bid.objects.filter(listing=listing).first()
+        listing.max_bid = highest_bid.amount if highest_bid else None
+
     Categories = Category.objects.all()
     context = {'listings':listings,
                'Categories':Categories}
@@ -92,7 +98,7 @@ def CreateListing(request):
         form = ListingForm(request.POST)
         if form.is_valid():
             listing = form.save(commit=False)
-            listing.creater = request.user
+            listing.owner = request.user
             listing.save()
             return redirect('index')
 
@@ -150,7 +156,7 @@ def listingComment(request, pk):
     listing_page = AuctionListing.objects.get(id=pk)
     if request.method == "POST":
         comment = Comment.objects.create(
-            creater = request.user,
+            owner = request.user,
             listing = listing_page,
             body = request.POST.get('body')
         )
