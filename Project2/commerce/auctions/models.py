@@ -28,9 +28,10 @@ class AuctionListing(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=500, null=True, blank=True)
     primary_price = models.FloatField()
-    imageUrl = models.URLField()
+    imageUrl = models.URLField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='categoryListings')
+    
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='categoryListings', null=True, blank=True)
     
     # take a snapshot on every time we save an item/and when we create it
     updated = models.DateTimeField(auto_now=True)

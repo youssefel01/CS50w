@@ -4,7 +4,16 @@ body {
     padding: 10px;
     font-family: 'Poppins', sans-serif;
 }
-
+/* title in center */
+body .title {
+    text-align: center;
+    margin-bottom: 10px;
+}
+/*signed user*/
+.signedUser {
+    margin-left: 10px;
+}
+/* form */
 .form-container {
     max-width: 900px;
     margin: 0 auto;
@@ -19,31 +28,30 @@ body {
     margin: 0;
     
 }
-
 .nav-item {
     margin: 0;
 }
-
 .nav-link {
     text-decoration: none;
     padding: 10px;
 }
-
 .right-links {
     display: flex;
     align-items: center;
     gap: 20px;
 }
-
 .left-links {
     display: flex;
     align-items: center;
     gap: 20px;
 }
-
 .nav-item a {
     color: black;
     font-size: 1.1em;
+}
+.nav-item a:hover {
+    border-bottom: 5px solid rgb(141, 141, 141);
+    border-radius: 2px;
 }
 
 /* home-container */
@@ -52,9 +60,19 @@ body {
     grid-template-columns: 1fr 4fr;
 }
 .Category-container {
-    border-right: 1px solid #ccc; /* Add a right border */
-    padding-right: 20px; /* Add some padding to the right to separate content from the border */
+    padding-right: 20px; 
+    padding-left: 10px;
 }
+/* category */
+.category {
+    margin: 15px;
+}
+.category a {
+    color: rgb(35, 35, 35);
+    font-size: 0.9em;
+    text-decoration:underline;
+}
+
 .listings-container {
     padding-left: 20px;
 }
@@ -64,7 +82,7 @@ body {
     margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 30px;
     list-style-type: none;
     justify-content: center;
 }
@@ -74,21 +92,139 @@ body {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: center;
-   
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+    border-radius: 8px;
 }
 
 .listings-container li .Image-container img {
-    max-width: 100%; /* Set the maximum width to fit inside the <li> */
-    max-height: 200px; /* Set the maximum height (adjust as needed) */
-    object-fit: cover; /* Maintain the image's aspect ratio */
+    max-width: 100%; 
+    max-height: 200px; 
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 5px;
 }
-
+.listings-container li .Image-container img:hover {
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+.listings-container li a {
+    text-decoration: none;
+    color: #0a0a0a; 
+}
+.listings-container li a h3 {
+    font-size: bold;
+}
 /*for the listing_page */
 
 .listing-container {
     display: grid;
     grid-template-columns: 3fr 1fr;
+    margin-left: 10px;
+    margin-right: 10px;
 }
+
+.item-imageTitel {
+    display: flex;
+    padding-right: 5px;
+    margin-bottom: 20px;
+    
+}
+.item-imageTitel .item-img {
+    width: 50%;
+}
+.item-imageTitel .item-img img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+
+.item-imageTitel .item-titleBP{
+    width: 500px;
+    background-color: aquamarine;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-left: 12px;
+    padding: 5px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.item-imageTitel .title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.item-imageTitel .title-container small {
+    font-size: 0.9em;
+}
+/* bid-price */
+.bid-price {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    font-size: 1.8em;
+    background-color: #f0f0f0;
+    border-top: 1px solid #ccc;
+    border-radius: 0px 0px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/*listing page forms, place a Bid*/
+.listing-page-form form{
+    margin-bottom: 12px;
+    max-width: 300px;
+}
+.submit {
+    color: #0a0a0a;
+    background-color: #fff;
+    border: 3px solid #0a0a0a;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+.submit:hover {
+    color: #fff;
+    background-color: #0a0a0a;
+    border: 3px solid #0a0a0a;
+}
+
+
+/* boxMessage */
+.boxMessage {
+    max-width: 300px;
+}
+
+.boxMessage p {
+    color: #000;
+    background-color: #efeeee;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+.boxMessage p a{
+    text-decoration: none;
+}
+
+/* Bidders */
+.item-bidder {
+    margin-left: 5px;
+}
+.item-bidder .bid{
+    margin-left: 15px;
+    color: #fff;
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
 
 /* Notifications control*/
 .has-unread {
@@ -107,3 +243,13 @@ body {
     background: red;
     color: white;
   }
+
+/*comment*/
+ .comment {
+    margin-bottom: 10px;
+ }
+ .comment form input{
+    width: 300px;
+    border-radius: 8px;
+ }
+ 

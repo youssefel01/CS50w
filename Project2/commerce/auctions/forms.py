@@ -1,9 +1,26 @@
+from typing import Any, Dict
 from django import forms
-from .models import AuctionListing, Bid
+from .models import AuctionListing, Bid, Category
 
 # adding forms
 
 class ListingForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Add an empty option to the category field's choices
+        self.fields['category'].empty_label = 'The default category is "Other"'
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        category = cleaned_data.get('category')
+
+        # if the category is None (not chosen), set it to 'Other'
+        if category is None:
+            cleaned_data['category'] = Category.objects.get(name='Other')
+
+        return cleaned_data
+
     class Meta:
         model = AuctionListing
         fields = ["title", "description", "primary_price", "imageUrl", "is_active", "category"]

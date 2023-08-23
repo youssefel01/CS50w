@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
@@ -31,8 +32,15 @@ def index(request):
                'Categories':Categories}
     return render(request, "auctions/index.html", context)
 
+
+@login_required(login_url='login')
 def Profile(request):
     listings = AuctionListing.objects.filter(owner=request.user)
+
+    # Update the max_bid attribute for each listing
+    for listing in listings: 
+        highest_bid = Bid.objects.filter(listing=listing).first()
+        listing.max_bid = highest_bid.amount if highest_bid else None
 
     context = {"listings":listings}
     return render(request, "auctions/profile.html", context)
@@ -90,7 +98,8 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
     
-# a function for adding listing
+# a view for adding listing
+@login_required(login_url='login')
 def CreateListing(request):
     form = ListingForm()
 
@@ -107,7 +116,7 @@ def CreateListing(request):
     
 
 
-# a function for geting the listing page
+# a view for geting the listing page
 def listingPage(request, pk):
     listing_page = AuctionListing.objects.get(id=pk)
     comments = Comment.objects.filter(listing=listing_page)
@@ -128,19 +137,15 @@ def listingPage(request, pk):
             bid_amount = form.cleaned_data['amount']
 
             if not last_bid and bid_amount <= listing_page.primary_price:
-                    print("with primary price")
                     messages.warning(request, "Your Bid Is Unsuitable")
             elif last_bid and bid_amount <= last_bid.amount:
-                print("with last bid")
                 messages.warning(request, "Your Bid Is Unsuitable")
             else:
-                print("in the way to be saved")
                 bid = form.save(commit=False)
                 bid.bidder = request.user 
                 bid.listing = listing_page
                 bid.save()
-                print("it's SAVE")
-                # Empty form after successful bid
+                # clean form after successful bid
                 form = BidForm()  # Instantiate a new form to clear the input field
                 return redirect("listingPage", pk=listing_page.id)
     else:
@@ -156,14 +161,15 @@ def listingComment(request, pk):
     listing_page = AuctionListing.objects.get(id=pk)
     if request.method == "POST":
         comment = Comment.objects.create(
-            owner = request.user,
+            creater = request.user,
             listing = listing_page,
             body = request.POST.get('body')
         )
     
     return redirect("listingPage", pk=listing_page.id)
 
-# Watchlist
+# Watchlist view
+@login_required(login_url='login')
 def watchlistPage(request):
     # get the objects associated with the watchlist of the user
     watched_listings = Watchlist.objects.filter(user=request.user).values('listing')
@@ -171,18 +177,23 @@ def watchlistPage(request):
     listing_pks = watched_listings.values_list('listing', flat=True)
     # get the listings from there primary keys
     watched_listings_data = AuctionListing.objects.filter(pk__in=listing_pks)
+    
+    # Update the max_bid attribute for each listing
+    for listing in watched_listings_data: 
+        highest_bid = Bid.objects.filter(listing=listing).first()
+        listing.max_bid = highest_bid.amount if highest_bid else None
 
-    print(f"watched_listings: |{watched_listings}|listing_pks: |{listing_pks}| DATA: |{watched_listings_data}|")
     context = {'watched_listings': watched_listings_data}
     return render(request, 'auctions/watchlist.html', context)
-
-
+# add
+@login_required(login_url='login')
 def addWatchlist(request, pk):
     listing_page = AuctionListing.objects.get(id=pk)
     if request.method == "POST": 
         Watchlist.objects.create(user=request.user, listing=listing_page)
         return redirect("listingPage", pk=listing_page.id)
-
+# remove
+@login_required(login_url='login')
 def removeWatchlist(request, pk):
     listing_page = AuctionListing.objects.get(id=pk)
     if request.method == "POST":
@@ -190,19 +201,22 @@ def removeWatchlist(request, pk):
         return redirect("listingPage", pk=listing_page.id)
     
 # Auction Control
+@login_required(login_url='login')
 def AuctionControl(request, pk):
     listing_page = AuctionListing.objects.get(id=pk)
     if request.method == "POST":
         if listing_page.is_active: #if it's active --> close it
             # check if there are any bidders
             last_bid = Bid.objects.filter(listing=listing_page).first()
-            print(last_bid.bidder)
             if last_bid: # there is a bidder --> process winner notification and ownership transfer
                 listing_page.is_active = False
-                listing_page.owner = last_bid.bidder 
+                listing_page.owner = last_bid.bidder
+                # Set the primary_price to the amount of the last bid
+                listing_page.primary_price = last_bid.amount
                 listing_page.save()
+                # Delete all previous bids related to this listing
+                Bid.objects.filter(listing=listing_page).delete()
                 # CREATE A NOTIFICATION sented to the winner
-                
                 notification = Notification.objects.create(user=last_bid.bidder, listing=listing_page)
                 messages.success(request, f"You have been successfully Closed this auction, the new owner of this auction is @{last_bid.bidder}")
             else: # no bidders --> just close the auction
@@ -216,8 +230,9 @@ def AuctionControl(request, pk):
             listing_page.save()
             messages.success(request, "You have been successfully Activate this auction.")
             return redirect("listingPage", pk=listing_page.id)
-        
-        
+
+# Notifications view 
+@login_required(login_url='login')
 def Notifications(request):
     notifications = Notification.objects.filter(user=request.user)
     

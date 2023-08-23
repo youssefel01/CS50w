@@ -4,6 +4,8 @@
 
 <div class="listings-container">
     {% if watched_listings %}
+    <h2 class="title">Your Watchlist</h2>
+    <hr>
     <ul>
         {% for listing in watched_listings %}
             <li>
@@ -15,18 +17,24 @@
                     </div>
                     <h3>{{ listing.title }}</h3>
                 </a>
+                <small>Owner: @{{ listing.owner }}</small>
                 <p>{{ listing.description|slice:":100" }}...</p>
-                <p class="current-price">Current Price: {{ listing.primary_price }}</p>
+                {% if listing.max_bid %}
+                <p class="current-price">Last Bid: ${{ listing.max_bid }}</p>
+                {% else %}
+                <p class="current-price">Primary Price: ${{ listing.primary_price }}</p>
+                {% endif %}
+                <small>Posted since: {{listing.updated|timesince}}</small>
                 <hr>
                 <form action="{% url 'removeWatchlist' listing.id %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit">Remove from Watchlist</button>
+                    <button class="submit" type="submit">Remove from Watchlist</button>
                 </form>
             </li>
         {% endfor %}
     </ul>
     {% else %}
-        <h2>No Items In Your Watchlist</h2>
+        <h2 class="title">No Items In Your Watchlist</h2>
     {% endif %}
 </div>
 
