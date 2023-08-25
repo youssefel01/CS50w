@@ -113,6 +113,23 @@ body .title {
 .listings-container li a h3 {
     font-size: bold;
 }
+/*last bid / primary price*/
+.last-bid {
+    margin-right: 20px;
+    margin-left: 20px;
+    background-color: #F2D57E;
+    padding: 5px 5px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+.Primary-price {
+    margin-right: 20px;
+    margin-left: 20px;
+    background-color: #D97855;
+    padding: 5px 5px;
+    border-radius: 8px;
+    font-weight: 600;
+}
 /*for the listing_page */
 
 .listing-container {
@@ -162,20 +179,35 @@ body .title {
     font-size: 0.9em;
 }
 /* bid-price */
-.bid-price {
+.bid-page {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 20%;
     font-size: 1.8em;
-    background-color: #f0f0f0;
+    background-color: #F2D57E;
     border-top: 1px solid #ccc;
-    border-radius: 0px 0px 8px;
+    border-radius: 0px 0px 8px 8px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+.price-page {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    font-size: 1.8em;
+    background-color: #D97855;
+    border-top: 1px solid #ccc;
+    border-radius: 0px 0px 8px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /*listing page forms, place a Bid*/
 .listing-page-form form{
     margin-bottom: 12px;

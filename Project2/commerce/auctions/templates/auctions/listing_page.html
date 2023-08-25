@@ -18,13 +18,15 @@
                             <h2>{{listing_page.title}}</h2>
                             <small>Posted on:{{ listing_page.created }}</small>
                         </div>
-                        <div class="bid-price">
-                            {% if last_bid %}
+                        {% if last_bid %}
+                        <div class="bid-page">
                             <strong>Last Bid: ${{last_bid.amount}}</strong>
-                            {% else %}
-                            <strong>Primary price: ${{listing_page.primary_price}}</strong>
-                            {% endif %}
                         </div>
+                        {% else %}
+                        <div class="price-page">
+                            <strong>Primary price: ${{listing_page.primary_price}}</strong>
+                        </div>
+                        {% endif %}
                     </div>
             </div>
             <!-- Close/Activate Auction & Add/Remove from watchlist -->
